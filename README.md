@@ -20,6 +20,10 @@ mean0 Love from 爱人TV
 
 有没有人救王奶奶哭😭
 
+这个人是iqooneo9用户。
+<img width="147" height="59" alt="image" src="https://github.com/user-attachments/assets/518a3789-9548-4046-9d3a-a9f3ed449d29" />
+
+
 # 冷知识 
 真正的受害者是Slime。
 <img width="753" height="557" alt="image" src="https://github.com/user-attachments/assets/41a3050b-16d1-47cb-8f6b-16737ac8f64b" />
