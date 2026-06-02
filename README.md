@@ -9,7 +9,7 @@ mean-0 Love from 爱人TV
 
 想要了解可以自行搜索相关视频 不要跑去什么定物 大粉图 慢脚平台搜。
 
-脚本我也会进行开源 使用CODEX与ChatGPT编写 python驱动。
+脚本我也会进行开源 使用ChatGPT编写 python驱动。
 
 相关使用方法请查看对应脚本的readme
 
