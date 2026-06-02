@@ -5,9 +5,10 @@ mean0 Love from 爱人TV
 # 冷知识 
 真正的受害者是Slime。
 <img width="753" height="557" alt="image" src="https://github.com/user-attachments/assets/41a3050b-16d1-47cb-8f6b-16737ac8f64b" />
-骂他的评论大概有1600条了。
-想看的可以进入slime文件夹查看。
 
+骂他的评论大概有1600条了。
+
+想看的可以进入slime文件夹查看。
 
 随缘更新
 
