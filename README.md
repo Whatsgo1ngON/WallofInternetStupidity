@@ -6,7 +6,7 @@
 查看此人故事[仓库版本](https://view.officeapps.live.com/op/embed.aspx?src=https://raw.githubusercontent.com/Whatsgo1ngON/imianTV/refs/heads/main/时眠shimiana女士的故事.docx)
 [最新最热版本](https://docs.qq.com/doc/DV0xtT3JSZHRBRVFI)
 
-# WhatsGoingon？
+# WhatsGoingOn？
 
 <img width="1705" height="798" alt="1780413511506" src="https://github.com/user-attachments/assets/7f75947a-45e6-4499-8ba0-986c0f063f17" />
 
