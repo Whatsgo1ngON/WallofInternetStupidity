@@ -1,8 +1,9 @@
 # WallofInternetStupidity
 
+[Full ver.](https://raw.githubusercontent.com/Whatsgo1ngON/imianTV/refs/heads/main/%E6%97%B6%E7%9C%A0shimiana%E5%A5%B3%E5%A3%AB%E7%9A%84%E6%95%85%E4%BA%8B.docx)
+
 # AAA妹妹批发
 <img width="1272" height="605" alt="Image_1780389182398_2" src="https://github.com/user-attachments/assets/3df77071-47eb-419a-84e6-3998e65181f2" />
-
 
 mean0 Love from 爱人TV
 
