@@ -1,0 +1,2 @@
+# WallofInternetStupidity
+mean-0
