@@ -1,6 +1,6 @@
 # WallofInternetStupidity
 
-[Full ver.](https://view.officeapps.live.com/op/embed.aspx?src=https://raw.githubusercontent.com/Whatsgo1ngON/imianTV/refs/heads/main/%E6%97%B6%E7%9C%A0shimiana%E5%A5%B3%E5%A3%AB%E7%9A%84%E6%95%85%E4%BA%8B.docx)
+查看此人搞笑合集[Full ver.](https://view.officeapps.live.com/op/embed.aspx?src=https://raw.githubusercontent.com/Whatsgo1ngON/imianTV/refs/heads/main/%E6%97%B6%E7%9C%A0shimiana%E5%A5%B3%E5%A3%AB%E7%9A%84%E6%95%85%E4%BA%8B.docx)
 
 # AAA妹妹批发
 <img width="1272" height="605" alt="Image_1780389182398_2" src="https://github.com/user-attachments/assets/3df77071-47eb-419a-84e6-3998e65181f2" />
