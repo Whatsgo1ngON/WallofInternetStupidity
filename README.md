@@ -1,9 +1,13 @@
 # WallofInternetStupidity
 
-mean-0 Love from 爱人TV
+mean0 Love from 爱人TV
 
 
 这个仓库我估计不会经常维护 随缘更新
+
+因为这些是脚本爬取的 可能残留无辜的人 我在这里先道个歉
+
+#对不起
 
 我不会把发生了什么事写进来 首先我懒 而且我文笔不好、
 
