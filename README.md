@@ -6,6 +6,12 @@
 
 mean0 Love from 爱人TV
 
+# 热知识
+
+此人是单亲家庭 所以他妹妹是？
+<img width="178" height="234" alt="image" src="https://github.com/user-attachments/assets/378a75f9-8cb4-43bc-91e1-0137762230ef" />
+有没有人救王奶奶哭😭
+
 # 冷知识 
 真正的受害者是Slime。
 <img width="753" height="557" alt="image" src="https://github.com/user-attachments/assets/41a3050b-16d1-47cb-8f6b-16737ac8f64b" />
