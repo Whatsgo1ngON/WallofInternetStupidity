@@ -1,3 +1,7 @@
+# WhatsGoingon？
+
+<img width="1705" height="798" alt="1780413511506" src="https://github.com/user-attachments/assets/7f75947a-45e6-4499-8ba0-986c0f063f17" />
+
 # WallofInternetStupidity
 
 > [!WARNING]
