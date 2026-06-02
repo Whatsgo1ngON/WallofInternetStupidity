@@ -3,7 +3,7 @@
 mean0 Love from 爱人TV
 
 
-这个仓库我估计不会经常维护 随缘更新
+随缘更新
 
 因为这些是脚本爬取的 可能残留无辜的人 我在这里先道个歉
 
@@ -19,6 +19,11 @@ mean0 Love from 爱人TV
 
 
 # 为什么要创建此仓库？
+
+6/2 15:02update 本仓库已改成imiantv。
+why？ 因为这个十五岁吴先生表演钟离假死 但是不超过8h就被识破了
+我也不知道怎么写了。 反正这个人是傻逼 下面有来自tg频道的一些图片
+想看完整版[Join]t.me/imiantv
 
 首先是我的朋友莫名其妙被网爆了 然后反转了 导致我十分生气。
 
@@ -45,3 +50,12 @@ mean0 Love from 爱人TV
 # 目前包含哪些平台的评论？
 
 目前只包含童站的视频 动态
+
+some funny
+
+<img width="293" height="112" alt="IMG_20260602_145747_694" src="https://github.com/user-attachments/assets/b7ea2884-efe2-475b-af65-0543b808972c" />
+<img width="579" height="1280" alt="IMG_20260602_145757_718" src="https://github.com/user-attachments/assets/5790e554-598b-4112-8910-9f7f1dbdcd2d" />
+<img width="679" height="344" alt="IMG_20260602_145815_045" src="https://github.com/user-attachments/assets/43ee7106-4537-4289-a3f1-f81e1ee7ba07" />
+<img width="161" height="1280" alt="IMG_20260602_145822_462" src="https://github.com/user-attachments/assets/12ce31d2-8b58-4aae-a1ab-94d62bca3ce7" />
+<img width="1260" height="449" alt="IMG_20260602_145823_103" src="https://github.com/user-attachments/assets/94079d4a-55c2-4273-b504-c18bdcedabaa" />
+
