@@ -1,7 +1,3 @@
-# WhatsGoingon？
-
-<img width="1705" height="798" alt="1780413511506" src="https://github.com/user-attachments/assets/7f75947a-45e6-4499-8ba0-986c0f063f17" />
-
 # WallofInternetStupidity
 
 > [!WARNING]
@@ -10,6 +6,9 @@
 查看此人故事[仓库版本](https://view.officeapps.live.com/op/embed.aspx?src=https://raw.githubusercontent.com/Whatsgo1ngON/imianTV/refs/heads/main/时眠shimiana女士的故事.docx)
 [最新最热版本](https://docs.qq.com/doc/DV0xtT3JSZHRBRVFI)
 
+# WhatsGoingon？
+
+<img width="1705" height="798" alt="1780413511506" src="https://github.com/user-attachments/assets/7f75947a-45e6-4499-8ba0-986c0f063f17" />
 
 # AAA妹妹批发
 <img width="1272" height="605" alt="Image_1780389182398_2" src="https://github.com/user-attachments/assets/3df77071-47eb-419a-84e6-3998e65181f2" />
