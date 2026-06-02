@@ -1,5 +1,9 @@
 # WallofInternetStupidity
 
+# AAA妹妹批发
+<img width="1272" height="605" alt="Image_1780389182398_2" src="https://github.com/user-attachments/assets/3df77071-47eb-419a-84e6-3998e65181f2" />
+
+
 mean0 Love from 爱人TV
 
 # 冷知识 
