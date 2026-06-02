@@ -1,6 +1,6 @@
 # WallofInternetStupidity
 
-查看此人故事[仓库版本](https://view.officeapps.live.com/op/embed.aspx?src=https://raw.githubusercontent.com/Whatsgo1ngON/imianTV/refs/heads/main/%E6%97%B6%E7%9C%A0shimiana%E5%A5%B3%E5%A3%AB%E7%9A%84%E6%95%85%E4%BA%8B.docx)
+查看此人故事[仓库版本](https://view.officeapps.live.com/op/embed.aspx?src=https://raw.githubusercontent.com/Whatsgo1ngON/imianTV/refs/heads/main/时眠shimiana女士的故事.docx)
 [最新最热版本](https://docs.qq.com/doc/DV0xtT3JSZHRBRVFI)
 
 
