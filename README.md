@@ -1,6 +1,8 @@
 # WallofInternetStupidity
 
-查看此人搞笑合集[Full ver.](https://view.officeapps.live.com/op/embed.aspx?src=https://raw.githubusercontent.com/Whatsgo1ngON/imianTV/refs/heads/main/%E6%97%B6%E7%9C%A0shimiana%E5%A5%B3%E5%A3%AB%E7%9A%84%E6%95%85%E4%BA%8B.docx)
+查看此人搞笑合集[仓库版本.](https://view.officeapps.live.com/op/embed.aspx?src=https://raw.githubusercontent.com/Whatsgo1ngON/imianTV/refs/heads/main/%E6%97%B6%E7%9C%A0shimiana%E5%A5%B3%E5%A3%AB%E7%9A%84%E6%95%85%E4%BA%8B.docx)
+[最新最热版本](https://docs.qq.com/doc/DV0xtT3JSZHRBRVFI)
+
 
 # AAA妹妹批发
 <img width="1272" height="605" alt="Image_1780389182398_2" src="https://github.com/user-attachments/assets/3df77071-47eb-419a-84e6-3998e65181f2" />
@@ -40,13 +42,11 @@ mean0 Love from 爱人TV
 
 6/2 15:02update 本仓库已改成imiantv。
 
-why？ 因为这个十五岁吴先生表演钟离假死 但是不超过8h就被识破了
+why？ 因为这个十五岁先生表演钟离假死 但是不超过8h就被识破了
 
-我也不知道怎么写了。 反正这个人是傻逼 下面有来自tg频道的一些图片
+我也不知道怎么写了。 反正这个人是傻逼 你可以查看上方docx文档查看
 
-这个人拥有高达15个前任和400个药儿。
-
-想看完整版[Join](t.me/imiantv)
+这个人拥有高达14个前任和400个药儿。
 
 
 首先是我的朋友莫名其妙被网爆了 然后反转了 导致我十分生气。
