@@ -67,6 +67,29 @@ py .\bilibili_comment_crawler.py --video BV1xx411c7mD -o .\today_comments.json -
 
 注意：日期过滤会保留“本体不在当天、但下面有当天回复”的父评论，以免丢失回复上下文。如果需要严格只保留本体时间在当天的记录，可以再做一次二次过滤。
 
+## 增量更新
+
+脚本支持读取已有 JSON，只抓新增评论，然后合并输出。推荐增量更新时使用时间排序：
+
+```powershell
+py .\bilibili_comment_crawler.py --dynamic 1209129105980653592 -o .\dynamics_all_comments_updated.json --incremental-existing .\dynamics_all_comments_main_only.json --merge-output --sort 0 --no-replies --workers 1 --retries 4 --min-delay 0 --max-delay 0
+```
+
+多个目标也可以一起更新：
+
+```powershell
+py .\bilibili_comment_crawler.py --dynamic 1209228787881869335? --dynamic 1209129105980653592 --dynamic 1209103404899500033 --dynamic 1208777348160159745 --dynamic 1206935842306654210 -o .\dynamics_all_comments_updated.json --incremental-existing .\dynamics_all_comments_main_only.json --merge-output --sort 0 --no-replies --workers 4 --retries 4 --min-delay 0 --max-delay 0
+```
+
+参数含义：
+
+- `--incremental-existing`：已有 JSON 文件。
+- `--merge-output`：把新增评论合并进已有评论后写入 `-o` 指定的新文件。
+- `--sort 0`：按时间顺序抓取，遇到已有 `rpid` 就停止，适合更新。
+- `--no-replies`：只更新一级评论。如果要同时抓楼中楼回复，可以去掉这个参数，但会慢很多。
+
+注意：如果旧文件之前是用热门排序抓的，第一次改用 `--sort 0` 更新时可能会补到一批旧文件没有覆盖的评论；之后再更新就会很快停止。
+
 ## 这次任务的命令
 
 两个视频只抓今天评论：
@@ -118,6 +141,7 @@ py .\bilibili_comment_crawler.py --video BV1xx411c7mD -o .\comments.json
 - `--max-reply-pages 5`：每条评论最多抓 5 页回复，不传则尽量抓完。
 - `--day 2026-06-02`：只保留指定日期的评论/回复。
 - `--sort 1`：一级评论排序。`0` 时间，`1` 点赞/默认热门，`2` 回复数。部分目标在旧时间排序下会返回空页，建议默认用 `1`。
+- `--incremental-existing old.json --merge-output`：读取旧文件，只抓新增并合并输出。
 - `--retries 8`：请求失败或遇到 `-352/-412/-509` 时的重试次数。
 - `--min-delay 0.8 --max-delay 1.5`：每次请求前随机等待，降低风控概率。
 - `--cookie "..."`：传 B站 Cookie。
