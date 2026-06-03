@@ -98,7 +98,8 @@ class BilibiliClient:
                 with urlopen(Request(full_url, headers=headers), timeout=self.timeout) as resp:
                     body = resp.read().decode("utf-8", errors="replace")
                     data = json.loads(body)
-                    if data.get("code") in (-352, -412, -509) and attempt < self.retries:
+                    retry_codes = (-352, -400, -403, -404, -412, -509, -799, 79902004)
+                    if data.get("code") in retry_codes and attempt < self.retries:
                         time.sleep((2 * attempt) + random.uniform(0.5, 1.5))
                         continue
                     return data
@@ -183,14 +184,19 @@ class BilibiliClient:
         max_reply_pages: int | None,
         reply_workers: int,
         sort: int,
+        fetch_nested_replies: bool = True,
         since_ts: int | None = None,
         until_ts: int | None = None,
+        stop_rpids: set[int] | None = None,
     ) -> dict[str, Any]:
         comments: list[dict[str, Any]] = []
         page = 1
         pagination_str = ""
+        seen_offsets: set[str] = set()
+        seen_rpids: set[int] = set()
         total_count: int | None = None
         stopped_by_date = False
+        consecutive_end_hints = 0
 
         while max_pages is None or page <= max_pages:
             payload = self.get_json(API_REPLY_WBI_MAIN, self.sign_wbi_params({
@@ -214,19 +220,35 @@ class BilibiliClient:
             replies = data.get("replies") or []
             if not replies:
                 break
+            if stop_rpids and any(int(item.get("rpid") or 0) in stop_rpids for item in replies):
+                replies = [item for item in replies if int(item.get("rpid") or 0) not in stop_rpids]
+                stopped_by_date = True
+            replies = [item for item in replies if item.get("rpid") not in seen_rpids]
+            if not replies:
+                break
+            seen_rpids.update(int(item["rpid"]) for item in replies if item.get("rpid") is not None)
 
-            page_comments = [parse_comment(item) for item in replies]
-            self._fill_nested_replies(
-                target=target,
-                comments=page_comments,
-                reply_page_size=reply_page_size,
-                max_reply_pages=max_reply_pages,
-                reply_workers=reply_workers,
+            print(
+                f"PAGE {target.kind}:{target.raw_id} page={page} got={len(replies)} total={len(comments)}",
+                file=sys.stderr,
+                flush=True,
             )
+            page_comments = [parse_comment(item) for item in replies]
+            if fetch_nested_replies:
+                self._fill_nested_replies(
+                    target=target,
+                    comments=page_comments,
+                    reply_page_size=reply_page_size,
+                    max_reply_pages=max_reply_pages,
+                    reply_workers=reply_workers,
+                )
             if since_ts is not None or until_ts is not None:
                 page_comments = [filter_comment_by_time(c, since_ts, until_ts) for c in page_comments]
                 page_comments = [c for c in page_comments if c is not None]
             comments.extend(page_comments)
+
+            if stop_rpids and stopped_by_date and sort == 0:
+                break
 
             if sort == 0 and since_ts is not None:
                 raw_times = [item.get("ctime") for item in replies if item.get("ctime") is not None]
@@ -237,8 +259,19 @@ class BilibiliClient:
             cursor = data.get("cursor") or {}
             pagination_reply = cursor.get("pagination_reply") or {}
             pagination_str = pagination_reply.get("next_offset") or ""
-            if cursor.get("is_end") or not pagination_str:
+
+            # B站 is_end 在按时间排序时可能过早返回 true，需兜底
+            if not pagination_str or pagination_str in seen_offsets:
                 break
+            if cursor.get("is_end"):
+                consecutive_end_hints += 1
+                # 连续 3 次 is_end 或已抓到 total_count 才真正停止
+                if consecutive_end_hints >= 3 or (total_count is not None and len(comments) >= (total_count or 0)):
+                    break
+            else:
+                consecutive_end_hints = 0
+
+            seen_offsets.add(pagination_str)
             page += 1
 
         return {
@@ -315,7 +348,7 @@ class BilibiliClient:
             if not replies:
                 break
 
-            collected.extend(parse_comment(item))
+            collected.extend(parse_comment(item) for item in replies)
             if len(replies) < page_size:
                 break
             page += 1
@@ -395,7 +428,7 @@ def reply_sort_to_mode(sort: int) -> int:
 
 def make_pagination_str(offset: str) -> str:
     return json.dumps(
-        {"type": 1, "direction": 1, "Data": {"offset": offset}},
+        {"offset": offset},
         separators=(",", ":"),
     )
 
@@ -488,7 +521,81 @@ def is_int_like(value: Any) -> bool:
     return True
 
 
-def load_targets(args: argparse.Namespace, client: BilibiliClient) -> list[Target]:
+def target_key(target_like: dict[str, Any] | Target) -> tuple[str, str]:
+    if isinstance(target_like, Target):
+        return target_like.kind, str(target_like.oid)
+    return str(target_like.get("type")), str(target_like.get("oid"))
+
+
+def load_existing_output(path: str | None) -> dict[str, Any] | None:
+    if not path:
+        return None
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def flatten_rpids(comments: list[dict[str, Any]]) -> set[int]:
+    rpids: set[int] = set()
+    for comment in comments:
+        if is_int_like(comment.get("rpid")):
+            rpids.add(int(comment["rpid"]))
+        rpids.update(flatten_rpids(comment.get("replies") or []))
+    return rpids
+
+
+def existing_target_map(existing: dict[str, Any] | None) -> dict[tuple[str, str], dict[str, Any]]:
+    mapping: dict[tuple[str, str], dict[str, Any]] = {}
+    if not existing:
+        return mapping
+    for target in existing.get("targets") or []:
+        if isinstance(target, dict):
+            mapping[target_key(target)] = target
+    return mapping
+
+
+def existing_target_input_map(existing: dict[str, Any] | None) -> dict[tuple[str, str], dict[str, Any]]:
+    mapping: dict[tuple[str, str], dict[str, Any]] = {}
+    if not existing:
+        return mapping
+    for target in existing.get("targets") or []:
+        if isinstance(target, dict):
+            mapping[(str(target.get("type")), str(target.get("input_id")))] = target
+    return mapping
+
+
+def merge_target_comments(existing_target: dict[str, Any] | None, new_target: dict[str, Any]) -> dict[str, Any]:
+    if not existing_target:
+        new_target["comments"] = sort_comments_by_time(new_target.get("comments") or [])
+        new_target["fetched_count"] = len(new_target["comments"])
+        return new_target
+
+    merged = dict(existing_target)
+    merged.update({k: v for k, v in new_target.items() if k != "comments"})
+
+    by_rpid: dict[int, dict[str, Any]] = {}
+    for source in ((existing_target.get("comments") or []), (new_target.get("comments") or [])):
+        for comment in source:
+            if is_int_like(comment.get("rpid")):
+                by_rpid[int(comment["rpid"])] = comment
+
+    merged["comments"] = sort_comments_by_time(list(by_rpid.values()))
+    merged["fetched_count"] = len(merged["comments"])
+    merged["incremental_new_count"] = len(new_target.get("comments") or [])
+    return merged
+
+
+def sort_comments_by_time(comments: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    for comment in comments:
+        if isinstance(comment, dict):
+            comment["replies"] = sort_comments_by_time(comment.get("replies") or [])
+    return sorted(comments, key=lambda item: int(item.get("ctime") or 0), reverse=True)
+
+
+def load_targets(
+    args: argparse.Namespace,
+    client: BilibiliClient,
+    existing_by_input: dict[tuple[str, str], dict[str, Any]] | None = None,
+) -> list[Target]:
     raw_targets: list[tuple[str, str]] = []
     for value in args.video:
         raw_targets.append(("video", value))
@@ -509,10 +616,18 @@ def load_targets(args: argparse.Namespace, client: BilibiliClient) -> list[Targe
     for kind, raw_id in raw_targets:
         kind = kind.lower()
         if kind in ("video", "v"):
-            oid = client.resolve_video_oid(raw_id)
-            targets.append(Target("video", raw_id, oid, TYPE_VIDEO))
+            existing = (existing_by_input or {}).get(("video", raw_id))
+            if existing and is_int_like(existing.get("oid")) and is_int_like(existing.get("comment_type_code")):
+                targets.append(Target("video", raw_id, int(existing["oid"]), int(existing["comment_type_code"])))
+            else:
+                oid = client.resolve_video_oid(raw_id)
+                targets.append(Target("video", raw_id, oid, TYPE_VIDEO))
         elif kind in ("dynamic", "dongtai", "dt"):
-            targets.append(client.resolve_dynamic_target(raw_id))
+            existing = (existing_by_input or {}).get(("dynamic", raw_id))
+            if existing and is_int_like(existing.get("oid")) and is_int_like(existing.get("comment_type_code")):
+                targets.append(Target("dynamic", raw_id, int(existing["oid"]), int(existing["comment_type_code"])))
+            else:
+                targets.append(client.resolve_dynamic_target(raw_id))
         else:
             raise ValueError(f"unknown target type: {kind}")
 
@@ -527,12 +642,15 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--dynamic", action="append", default=[], help="动态 ID 或动态链接；可重复传入")
     parser.add_argument("--targets", help="批量目标 JSON 文件，格式为 [{'type':'video|dynamic','id':'...'}]")
     parser.add_argument("-o", "--output", required=True, help="输出 JSON 文件路径")
+    parser.add_argument("--incremental-existing", help="已有输出 JSON；遇到已存在 rpid 时停止，用于增量更新")
+    parser.add_argument("--merge-output", action="store_true", help="把新抓到的评论合并到 --incremental-existing 后写入输出")
     parser.add_argument("--workers", type=int, default=4, help="目标级并发线程数，默认 4")
     parser.add_argument("--reply-workers", type=int, default=4, help="单个目标内拉取评论回复的线程数，默认 4")
     parser.add_argument("--page-size", type=int, default=20, help="一级评论每页数量，默认 20")
     parser.add_argument("--reply-page-size", type=int, default=20, help="评论回复每页数量，默认 20")
     parser.add_argument("--max-pages", type=int, help="每个目标最多爬取多少页一级评论；不传则尽量爬完")
     parser.add_argument("--max-reply-pages", type=int, help="每条评论最多爬取多少页回复；不传则尽量爬完")
+    parser.add_argument("--no-replies", action="store_true", help="只抓一级评论，不额外分页抓楼中楼回复")
     parser.add_argument("--sort", type=int, default=1, choices=[0, 1, 2], help="一级评论排序：0 时间，1 点赞，2 回复数；默认 1")
     parser.add_argument("--day", help="只保留指定日期的评论，格式 YYYY-MM-DD，按本机时区计算")
     parser.add_argument("--cookie", default=os.environ.get("BILI_COOKIE", ""), help="B站 Cookie；也可用环境变量 BILI_COOKIE")
@@ -554,7 +672,10 @@ def main() -> int:
         min_delay=args.min_delay,
         max_delay=args.max_delay,
     )
-    targets = load_targets(args, client)
+    existing_output = load_existing_output(args.incremental_existing)
+    existing_by_input = existing_target_input_map(existing_output)
+    targets = load_targets(args, client, existing_by_input)
+    existing_targets = existing_target_map(existing_output)
     since_ts: int | None = None
     until_ts: int | None = None
     if args.day:
@@ -583,8 +704,11 @@ def main() -> int:
                 args.max_reply_pages,
                 args.reply_workers,
                 args.sort,
+                not args.no_replies,
                 since_ts,
                 until_ts,
+                flatten_rpids((existing_targets.get(target_key(target)) or {}).get("comments") or [])
+                if args.incremental_existing else None,
             ): target
             for target in targets
         }
@@ -603,6 +727,8 @@ def main() -> int:
                     "comments": [],
                 }
                 print(f"ERR {target.kind}:{target.raw_id} {exc}", file=sys.stderr)
+            if args.merge_output:
+                result = merge_target_comments(existing_targets.get(target_key(target)), result)
             output["targets"].append(result)
 
     with open(args.output, "w", encoding="utf-8") as f:
