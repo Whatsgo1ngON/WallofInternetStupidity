@@ -1,6 +1,6 @@
 # WallofInternetStupidity
 
-6/2 2update 本仓库已改成imiantv。
+6/2 update 本仓库已rename imiantv。
 
 6/3 update 本仓库不再针对某人 此人已道歉 已改成傻逼展览馆
 
@@ -8,7 +8,7 @@
 真正的受害者是Slime。
 <img width="753" height="557" alt="image" src="https://github.com/user-attachments/assets/41a3050b-16d1-47cb-8f6b-16737ac8f64b" />
 
-骂他的评论大概有1000条了。
+骂他的评论大概有2000条了。
 
 想看的可以进入slime文件夹查看。
 
